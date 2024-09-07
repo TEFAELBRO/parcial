@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PARCIAL WEB</title>
+
+    <link rel="stylesheet" href="styles.css"> <!-- Enlace al archivo de el CSS -->
+
+</head>
+
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript">
+    google.charts.load('current', {'packages':['corechart']});
+    google.charts.setOnLoadCallback(drawChart);
+
+    function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+            ['Tipo de Error', 'Totales'],
+            ['Errores de Arcoseno', 0],
+            ['Errores de Arcocoseno', 0],
+            ['Errores de Raíz Cuadrada', 0],
+            ['Errores de División', 0],
+            ['Errores de Logaritmo', 0]
+        ]);
+
+        var options = {
+            title: 'Distribución de Errores'
+        };
+
+        var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+
+        chart.draw(data, options);
+    }
+
+    function updateChart(erroresArcoseno, erroresArcocoseno, erroresRaizCuadrada, erroresDivision, erroresLogaritmo) {
+        var data = google.visualization.arrayToDataTable([
+            ['Tipo de Error', 'Totales'],
+            ['Errores de Arcoseno', erroresArcoseno],
+            ['Errores de Arcocoseno', erroresArcocoseno],
+            ['Errores de Raíz Cuadrada', erroresRaizCuadrada],
+            ['Errores de División', erroresDivision],
+            ['Errores de Logaritmo', erroresLogaritmo]
+        ]);
+
+        var options = {
+            title: 'Distribución de Errores'
+        };
+
+        var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+
+        chart.draw(data, options);
+    }
+</script>
+
+<body>
+
+    <center> <h2>Presentado por:</h2>               </center>
+    <center> <p>Jesús Alejandro Guerrero Alvarez</p></center>
+    <center> <p>Código: 2216710</p>                 </center>
+    <br>
+    <center> <p>Juan Manuel Tejada Fajardo</p>      </center>
+    <center> <p>Código: 2216685</p>                 </center>
+    <br>
+    <center><img src="ecuacion_parcial.PNG" alt="ECUACION" width="800"></center>
+    <br>
+
+    <button id="procesar">Procesar</button>
+    <div id="resultados"></div>
+    <table id="tablaErrores">
+        <thead>
+            <tr>
+                <th>Tipo de Error</th>
+                <th>Totales</th>
+                <th>Porcentaje</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Total de errores de arcoseno</td>
+                <td id="erroresArcoseno">0</td>
+                <td id="porcentajeArcoseno">0%</td>
+            </tr>
+            <tr>
+                <td>Total de errores de arcocoseno</td>
+                <td id="erroresArcocoseno">0</td>
+                <td id="porcentajeArcocoseno">0%</td>
+            </tr>
+            <tr>
+                <td>Total de errores de raíz cuadrada</td>
+                <td id="erroresRaizCuadrada">0</td>
+                <td id="porcentajeRaizCuadrada">0%</td>
+            </tr>
+            <tr>
+                <td>Total de errores de división</td>
+                <td id="erroresDivision">0</td>
+                <td id="porcentajeDivision">0%</td>
+            </tr>
+            <tr>
+                <td>Total de errores de logaritmo natural</td>
+                <td id="erroresLogaritmo">0</td>
+                <td id="porcentajeLogaritmo">0%</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <script>
+        //  genera un número aleatorio entre -1 y 1
+        function randomValue() {
+            return Math.random() * 2 - 1;
+        }
+
+        // calcula la ecuación
+        function calcularY(m, n, d, p, q, r, s, t, u, v, w, x, f, z, a, b, c) {
+            let error = {
+                arcoseno: 0,
+                arcocoseno: 0,
+                raizCuadrada: 0,
+                division: 0,
+                logaritmo: 0
+            };
+
+            try {
+                // Verificación y cálculos
+                if (m - n < -1 || m - n > 1) {
+                    error.arcocoseno++;
+                    throw new Error('Arcocoseno fuera de rango');
+                }
+                if ((n * Math.sqrt(d)) / p < -1 || (n * Math.sqrt(d)) / p > 1) {
+                    error.arcoseno++;
+                    throw new Error('Arcoseno fuera de rango');
+                }
+                if (s - t < 0) {
+                    error.raizCuadrada++;
+                    throw new Error('Raíz cuadrada de número negativo');
+                }
+                if (w - x < 0) {
+                    error.raizCuadrada++;
+                    throw new Error('Raíz cuadrada de número negativo');
+                }
+                if (a + b < 0) {
+                    error.raizCuadrada++;
+                    throw new Error('Raíz cuadrada de número negativo');
+                }
+                if (v === 0 || c === 0) {
+                    error.division++;
+                    throw new Error('División por cero');
+                }
+                if (q * r <= 0 || f + z <= 0) {
+                    error.logaritmo++;
+                    throw new Error('Logaritmo de número no positivo');
+                }
+
+                // Calcula la Y
+                const numerador = Math.acos(m - n) + Math.asin((n * Math.sqrt(d)) / p) + Math.log(q * r) + Math.sqrt(s - t);
+                const denominador = Math.asin((u / v) + Math.sqrt(w - x)) * Math.log(f + z) + Math.acos((Math.sqrt(a + b)) / c);
+
+                return { y: numerador / denominador, error };
+            } catch {
+                return { y: NaN, error };
+            }
+        }
+
+        // Eventode clic en el botón
+        document.getElementById('procesar').addEventListener('click', () => {
+    let erroresArcoseno = 0;
+    let erroresArcocoseno = 0;
+    let erroresRaizCuadrada = 0;
+    let erroresDivision = 0;
+    let erroresLogaritmo = 0;
+
+    // Ejecutar 1000 ciclos
+    for (let i = 0; i < 1000; i++) {
+        // Asignar valores aleatorios a las variables
+        let m = randomValue();
+        let n = randomValue();
+        let d = randomValue();
+        let p = randomValue();
+        let q = randomValue();
+        let r = randomValue();
+        let s = randomValue();
+        let t = randomValue();
+        let u = randomValue();
+        let v = randomValue();
+        let w = randomValue();
+        let x = randomValue();
+        let f = randomValue();
+        let z = randomValue();
+        let a = randomValue();
+        let b = randomValue();
+        let c = randomValue();
+
+        // Calcular y capturar errores
+        let { y, error } = calcularY(m, n, d, p, q, r, s, t, u, v, w, x, f, z, a, b, c);
+
+        // Acumula errores
+        erroresArcoseno += error.arcoseno;
+        erroresArcocoseno += error.arcocoseno;
+        erroresRaizCuadrada += error.raizCuadrada;
+        erroresDivision += error.division;
+        erroresLogaritmo += error.logaritmo;
+    }
+
+    // Actualiza tabla de errores
+    const totalCiclos = 1000;
+
+    document.getElementById('erroresArcoseno').innerText = erroresArcoseno;
+    document.getElementById('porcentajeArcoseno').innerText = `${((erroresArcoseno / totalCiclos) * 100).toFixed(2)}%`;
+
+    document.getElementById('erroresArcocoseno').innerText = erroresArcocoseno;
+    document.getElementById('porcentajeArcocoseno').innerText = `${((erroresArcocoseno / totalCiclos) * 100).toFixed(2)}%`;
+
+    document.getElementById('erroresRaizCuadrada').innerText = erroresRaizCuadrada;
+    document.getElementById('porcentajeRaizCuadrada').innerText = `${((erroresRaizCuadrada / totalCiclos) * 100).toFixed(2)}%`;
+
+    document.getElementById('erroresDivision').innerText = erroresDivision;
+    document.getElementById('porcentajeDivision').innerText = `${((erroresDivision / totalCiclos) * 100).toFixed(2)}%`;
+
+    document.getElementById('erroresLogaritmo').innerText = erroresLogaritmo;
+    document.getElementById('porcentajeLogaritmo').innerText = `${((erroresLogaritmo / totalCiclos) * 100).toFixed(2)}%`;
+
+    // Actualiza el gráfico de pastel
+    updateChart(erroresArcoseno, erroresArcocoseno, erroresRaizCuadrada, erroresDivision, erroresLogaritmo);
+
+
+
+                // Calcular y capturar errores
+                let { y, error } = calcularY(m, n, d, p, q, r, s, t, u, v, w, x, f, z, a, b, c);
+
+                // Acumula errore
+                erroresArcoseno += error.arcoseno;
+                erroresArcocoseno += error.arcocoseno;
+                erroresRaizCuadrada += error.raizCuadrada;
+                erroresDivision += error.division;
+                erroresLogaritmo += error.logaritmo;
+
+            });
+    </script>
+
+<div id="piechart" style="width: 900px; height: 500px;"></div>
+</body>
+</html>
